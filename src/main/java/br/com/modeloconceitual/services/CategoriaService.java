@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.modeloconceitual.domain.Categoria;
+import br.com.modeloconceitual.exception.ObjectNotFundException;
 import br.com.modeloconceitual.repositories.CategoriaRepository;
 
 @Service
@@ -16,6 +17,7 @@ public class CategoriaService {
 	
 	public Categoria buscar(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFundException(
+				"Objeto não encontrado! ID: " + id + ", tipo: " + Categoria.class.getName()));
 	}
 }
