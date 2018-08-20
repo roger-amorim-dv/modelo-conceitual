@@ -13,6 +13,7 @@ import br.com.modeloconceitual.domain.Cidade;
 import br.com.modeloconceitual.domain.Cliente;
 import br.com.modeloconceitual.domain.Endereco;
 import br.com.modeloconceitual.domain.Estado;
+import br.com.modeloconceitual.domain.ItemPedido;
 import br.com.modeloconceitual.domain.Pagamento;
 import br.com.modeloconceitual.domain.PagamentoComBoleto;
 import br.com.modeloconceitual.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import br.com.modeloconceitual.repositories.CidadeRepository;
 import br.com.modeloconceitual.repositories.ClienteRepository;
 import br.com.modeloconceitual.repositories.EnderecoRepository;
 import br.com.modeloconceitual.repositories.EstadoRepository;
+import br.com.modeloconceitual.repositories.ItemPedidoRepository;
 import br.com.modeloconceitual.repositories.PagamentoRepository;
 import br.com.modeloconceitual.repositories.PedidoRepository;
 import br.com.modeloconceitual.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class McApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	
 	public static void main(String[] args) {
@@ -110,6 +115,18 @@ public class McApplication implements CommandLineRunner{
 		
 		cli01.getPedidos().addAll(Arrays.asList(ped01, ped02));
 		
+		ItemPedido ip01 = new ItemPedido(ped01, p1, 0.00, 1, 2000.00);
+		ItemPedido ip02 = new ItemPedido(ped01, p3, 0.00, 2, 80.0);
+		ItemPedido ip03 = new ItemPedido(ped02, p2, 100.00, 1, 800.00);
+		
+		ped01.getItens().addAll(Arrays.asList(ip01, ip02));
+		ped02.getItens().addAll(Arrays.asList(ip03));	
+		
+		p1.getItens().addAll(Arrays.asList(ip01));
+		p2.getItens().addAll(Arrays.asList(ip03));
+		p3.getItens().addAll(Arrays.asList(ip02));
+		
+		
 		categoriaRepository.saveAll(Arrays.asList(cat01, cat02));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		estadoRepository.saveAll(Arrays.asList(est01, est02));
@@ -118,5 +135,6 @@ public class McApplication implements CommandLineRunner{
 		enderecoRepository.saveAll(Arrays.asList(e01, e02));
 		pedidoRepository.saveAll(Arrays.asList(ped01, ped02));
 		pagamentoRepository.saveAll(Arrays.asList(pagto01, pagto02));
+		itemPedidoRepository.saveAll(Arrays.asList(ip01, ip02, ip03));
 	}
 }
